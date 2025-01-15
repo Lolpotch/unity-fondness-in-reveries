@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,23 +8,27 @@ public class SwingBabyToSleep : MonoBehaviour
     public RectTransform basket;
     public RectTransform guideLeft;
     public RectTransform guideRight;
+    public RectTransform babyPanel;
 
     public float speed = 200f;
     public float pointLeft = -10f;
     public float pointRight = 10f;
-    public float swingCountRequired = 4;
+    public int swingCountRequired = 4;
+    public float delayLength = 3f;
 
     Button basketButton;
     Outline basketOutline;
 
     int swingCount = 0;
     bool isSwingDialogueTriggered = false;
+    bool isBabySleepDialogueTriggered = false;
     bool movingLeft = true;
 
     void Start()
     {
         guideLeft.gameObject.SetActive(true);
         guideRight.gameObject.SetActive(false);
+        babyPanel.gameObject.SetActive(false);
 
         basketButton = basket.GetComponent<Button>();
         basketOutline = basket.GetComponent<Outline>();
@@ -55,6 +60,13 @@ public class SwingBabyToSleep : MonoBehaviour
             basketOutline.enabled = true;
             basketButton.interactable = true;
         }
+
+        if (DialogueTrigger.Instance.isPutBabySleepPlayed && !isBabySleepDialogueTriggered)
+        {
+            isBabySleepDialogueTriggered = true;
+
+            StartCoroutine(CallDisableMechanic());
+        }
     }
     
     public void PlaySleepBabyAnim()
@@ -62,10 +74,27 @@ public class SwingBabyToSleep : MonoBehaviour
         basketOutline.enabled = false;
         basketButton.interactable = false;
 
-        print("SLEEP BABY ANIMATION START HERE");
-        // Kode buat play animasi
+        StartCoroutine(PlayBabyPanel());
+    }
+
+    private IEnumerator PlayBabyPanel()
+    {
+        babyPanel.gameObject.SetActive(true);
+        
+        yield return new WaitForSeconds(delayLength);
+        
+        babyPanel.gameObject.SetActive(false);
+        
+        yield return new WaitForSeconds(delayLength);
+
         MechanicsManager.Instance.isPutBabySleep = true;
-        // Abis itu matiin mekanik ini
+    }
+
+    private IEnumerator CallDisableMechanic()
+    {
+        yield return new WaitForSeconds(delayLength);
+
+        GetComponent<DisableMechanic>().DisableThisMechanic();
     }
 
     void MoveBaby(float target)

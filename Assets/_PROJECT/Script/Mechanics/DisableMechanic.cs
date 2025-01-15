@@ -4,6 +4,7 @@ public class DisableMechanic : MonoBehaviour
 {
     public RectTransform parent;
     public MechanicName mechanicName;
+    public bool isDisableByKey = true;
 
     void Start()
     {
@@ -11,7 +12,7 @@ public class DisableMechanic : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && isDisableByKey)
         {
             DisableThisMechanic();
         }

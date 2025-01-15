@@ -118,7 +118,7 @@ public class DialogueTrigger : MonoBehaviour
     }
 
     [SerializeField] public bool isSwingingBabyPlayed;
-    private IEnumerator PlaySwingingBaby()
+    public IEnumerator PlaySwingingBaby()
     {
         yield return new WaitUntil (() => MechanicsManager.Instance.isSwingComplete);
         currentDialogue = swingingBaby;
@@ -136,7 +136,7 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    [SerializeField] private bool isPutBabySleepPlayed = false;
+    [SerializeField] public bool isPutBabySleepPlayed = false;
     private IEnumerator PlayBabySleep()
     {
         yield return new WaitUntil (() => MechanicsManager.Instance.isPutBabySleep);
@@ -186,81 +186,74 @@ public class DialogueTrigger : MonoBehaviour
         currentDialogue = null;
         isTurnOffLampPlayed = true;
 
-        if (isTurnOffLampPlayed && !isPlayInteractPhoto1Played) {
-            StartCoroutine(PlayInteractPhoto1());
-        } else {
-            StopCoroutine(PlayInteractPhoto1());
-        }
+        StartCoroutine(PlayInteractPhoto1());
+        StartCoroutine(PlayInteractPhoto2());
+        StartCoroutine(PlayInteractPhoto3());
+        StartCoroutine(PlayInteractPhoto4());
     }
 
     [SerializeField] public bool isPlayInteractPhoto1Played= false;
     private IEnumerator PlayInteractPhoto1()
     {
-        yield return new WaitUntil (() => MechanicsManager.Instance.isInteractPhoto_1Opened);
-        currentDialogue = interactPhoto1;
-        yield return new WaitForSeconds(0.5f);
-        DialogueManager.instance.StartConversation();
-        
-        yield return new WaitUntil (() => !DialogueManager.instance.isRunningConversation);
-        currentDialogue = null;
-        isPlayInteractPhoto1Played = true;
-
-        if (isPlayInteractPhoto1Played && !isPlayInteractPhoto2Played) {
-            StartCoroutine(PlayInteractPhoto2());
-        } else {
-            StopCoroutine(PlayInteractPhoto2());
+        if (!isPlayInteractPhoto1Played)
+        {
+            yield return new WaitUntil (() => MechanicsManager.Instance.isInteractPhoto_1Opened);
+            currentDialogue = interactPhoto1;
+            yield return new WaitForSeconds(0.5f);
+            DialogueManager.instance.StartConversation();
+            
+            yield return new WaitUntil (() => !DialogueManager.instance.isRunningConversation);
+            currentDialogue = null;
+            isPlayInteractPhoto1Played = true;   
         }
     }
 
     [SerializeField] public bool isPlayInteractPhoto2Played= false;
     private IEnumerator PlayInteractPhoto2()
     {
-        yield return new WaitUntil (() => MechanicsManager.Instance.isInteractPhoto_2Opened);
-        currentDialogue = interactPhoto2;
-        yield return new WaitForSeconds(0.5f);
-        DialogueManager.instance.StartConversation();
-        
-        yield return new WaitUntil (() => !DialogueManager.instance.isRunningConversation);
-        currentDialogue = null;
-        isPlayInteractPhoto2Played = true;
-
-        if (isPlayInteractPhoto2Played && !isPlayInteractPhoto3Played) {
-            StartCoroutine(PlayInteractPhoto3());
-        } else {
-            StopCoroutine(PlayInteractPhoto3());
+        if (!isPlayInteractPhoto2Played)
+        {
+            yield return new WaitUntil (() => MechanicsManager.Instance.isInteractPhoto_2Opened);
+            currentDialogue = interactPhoto2;
+            yield return new WaitForSeconds(0.5f);
+            DialogueManager.instance.StartConversation();
+            
+            yield return new WaitUntil (() => !DialogueManager.instance.isRunningConversation);
+            currentDialogue = null;
+            isPlayInteractPhoto2Played = true;
         }
     }
 
     [SerializeField] public bool isPlayInteractPhoto3Played= false;
     private IEnumerator PlayInteractPhoto3()
     {
-        yield return new WaitUntil (() => MechanicsManager.Instance.isInteractPhoto_3Opened);
-        currentDialogue = interactPhoto3;
-        yield return new WaitForSeconds(0.5f);
-        DialogueManager.instance.StartConversation();
-        
-        yield return new WaitUntil (() => !DialogueManager.instance.isRunningConversation);
-        currentDialogue = null;
-        isPlayInteractPhoto3Played = true;
-
-        if (isPlayInteractPhoto3Played && !isPlayInteractPhoto4Played) {
-            StartCoroutine(PlayInteractPhoto4());
-        } else {
-            StopCoroutine(PlayInteractPhoto4());
+        if (!isPlayInteractPhoto3Played)
+        {
+            yield return new WaitUntil (() => MechanicsManager.Instance.isInteractPhoto_3Opened);
+            currentDialogue = interactPhoto3;
+            yield return new WaitForSeconds(0.5f);
+            DialogueManager.instance.StartConversation();
+            
+            yield return new WaitUntil (() => !DialogueManager.instance.isRunningConversation);
+            currentDialogue = null;
+            isPlayInteractPhoto3Played = true;
         }
     }
 
     [SerializeField] public bool isPlayInteractPhoto4Played= false;
     private IEnumerator PlayInteractPhoto4()
     {
-        yield return new WaitUntil (() => MechanicsManager.Instance.isInteractPhoto_4Opened);
-        currentDialogue = interactPhoto4;
-        yield return new WaitForSeconds(0.5f);
-        DialogueManager.instance.StartConversation();
-        
-        yield return new WaitUntil (() => !DialogueManager.instance.isRunningConversation);
-        currentDialogue = null;
-        isPlayInteractPhoto4Played = true;
+        if (!isPlayInteractPhoto4Played)
+        {
+            yield return new WaitUntil (() => MechanicsManager.Instance.isInteractPhoto_4Opened);
+            currentDialogue = interactPhoto4;
+            yield return new WaitForSeconds(0.5f);
+            DialogueManager.instance.StartConversation();
+            
+            yield return new WaitUntil (() => !DialogueManager.instance.isRunningConversation);
+            currentDialogue = null;
+            isPlayInteractPhoto4Played = true;
+        }
     }
 
     [SerializeField] private bool isToDoListPlayed;
