@@ -14,7 +14,7 @@ public class SwingBabyToSleep : MonoBehaviour
     public float pointLeft = -10f;
     public float pointRight = 10f;
     public int swingCountRequired = 4;
-    public float delayLength = 3f;
+    public float delayLength = 1.5f;
 
     Button basketButton;
     Outline basketOutline;
@@ -53,7 +53,7 @@ public class SwingBabyToSleep : MonoBehaviour
             }
         }
 
-        if (DialogueTrigger.Instance.isSwingingBabyPlayed && !isSwingDialogueTriggered)
+        if (DialogueTrigger.Instance.isSwingingBaby_3Played && !isSwingDialogueTriggered)
         {
             isSwingDialogueTriggered = true;
 
@@ -61,11 +61,11 @@ public class SwingBabyToSleep : MonoBehaviour
             basketButton.interactable = true;
         }
 
-        if (DialogueTrigger.Instance.isPutBabySleepPlayed && !isBabySleepDialogueTriggered)
+        if (DialogueTrigger.Instance.isPutBabySleep_4Played && !isBabySleepDialogueTriggered)
         {
             isBabySleepDialogueTriggered = true;
 
-            StartCoroutine(CallDisableMechanic());
+            StartCoroutine(DisableMechanic());
         }
     }
     
@@ -90,7 +90,7 @@ public class SwingBabyToSleep : MonoBehaviour
         MechanicsManager.Instance.isPutBabySleep = true;
     }
 
-    private IEnumerator CallDisableMechanic()
+    private IEnumerator DisableMechanic()
     {
         yield return new WaitForSeconds(delayLength);
 

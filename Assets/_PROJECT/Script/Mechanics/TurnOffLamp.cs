@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,7 @@ public class TurnOffLamp : MonoBehaviour
 {
     public RectTransform buttonOn;
     public RectTransform buttonOff;
+    public float delayLength;
 
     Button buttonOnBtn;
     Outline buttonOnOutline;
@@ -22,8 +24,8 @@ public class TurnOffLamp : MonoBehaviour
 
     void Update()
     {
-        buttonOnBtn.interactable = DialogueTrigger.Instance.isTurnOffLampPlayed;
-        buttonOnOutline.enabled = DialogueTrigger.Instance.isTurnOffLampPlayed;
+        buttonOnBtn.interactable = DialogueTrigger.Instance.isTurnOffLamp_6Played;
+        buttonOnOutline.enabled = DialogueTrigger.Instance.isTurnOffLamp_6Played;
     }
     
     public void TurnOffLampButton()
@@ -31,6 +33,15 @@ public class TurnOffLamp : MonoBehaviour
         buttonOn.gameObject.SetActive(false);
         buttonOff.gameObject.SetActive(true);
 
+        // MechanicsManager.Instance.isTurnOffLampPlayed = true;
+        StartCoroutine(DisableMechanic());
         // Abis itu matiin mekanik ini
+    }
+
+    private IEnumerator DisableMechanic()
+    {
+        yield return new WaitForSeconds(delayLength);
+
+        GetComponent<DisableMechanic>().DisableThisMechanic();
     }
 }

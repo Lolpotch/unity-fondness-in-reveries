@@ -1,9 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class CloseCurtain : MonoBehaviour
 {
     public RectTransform guideRight;
     public RectTransform guideLeft;
+    public float delayLength = 3f;
 
     Vector2 startMousePosition;
     Vector2 endMousePosition;
@@ -23,7 +25,7 @@ public class CloseCurtain : MonoBehaviour
 
     void Update()
     {
-        if (DialogueTrigger.Instance.isCloseCurtainPlayed)
+        if (DialogueTrigger.Instance.isCloseCurtain_5Played)
         {
             // Detect when the left mouse button is pressed
             if (Input.GetMouseButtonDown(0))
@@ -62,9 +64,18 @@ public class CloseCurtain : MonoBehaviour
                 {
                     Debug.Log("Both swipes completed");
 
+                    StartCoroutine(DisableMechanic());
+                    // MechanicsManager.Instance.isCloseCurtainPlayed = true;
                     // You can add further actions here
                 }
             }
         }
+    }
+
+    private IEnumerator DisableMechanic()
+    {
+        yield return new WaitForSeconds(delayLength);
+
+        GetComponent<DisableMechanic>().DisableThisMechanic();
     }
 }

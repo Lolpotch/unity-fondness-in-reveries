@@ -1,29 +1,37 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InteractPhoto : MonoBehaviour
 {
-
     public MechanicName mechanicName;
-    
+    public RectTransform disableMechanicButton;
+
+    [SerializeField] bool isButtonAppeared = false;
+    // Start is called before the first frame update
     void Start()
     {
-        switch(mechanicName)
+        isButtonAppeared = false;
+        disableMechanicButton.gameObject.SetActive(false);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!isButtonAppeared)
         {
-            case MechanicName.interactPhoto1:
-                MechanicsManager.Instance.isInteractPhoto_1Played = true;
-                break;
-
-            case MechanicName.interactPhoto2:
-                MechanicsManager.Instance.isInteractPhoto_2Played = true;
-                break;
-
-            case MechanicName.interactPhoto3:
-                MechanicsManager.Instance.isInteractPhoto_3Played = true;
-                break;
-
-            case MechanicName.interactPhoto4:
-                MechanicsManager.Instance.isInteractPhoto_4Played = true;
-                break;
+            switch (mechanicName)
+            {
+                case MechanicName.interactPhoto1:
+                    if (DialogueTrigger.Instance.isPlayInteractPhoto1_8Played)
+                    {
+                        disableMechanicButton.gameObject.SetActive(true);
+                        isButtonAppeared = true;
+                    }
+                    break;
+            }
         }
     }
+
+
 }

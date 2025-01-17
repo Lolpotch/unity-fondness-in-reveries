@@ -15,33 +15,56 @@ public class MechanicsManager : MonoBehaviour
         DontDestroyOnLoad(gameObject); // Jika perlu instance bertahan antar scene
     }
 
-    [HideInInspector] public bool isSwingComplete = false;
-    [HideInInspector] public bool isPutBabySleep = false;
-
     public bool isGameStart;
     public bool isOpenMechanic;
     public string currentTriggerMechanic;
+    public MechanicName currentMechanic;
 
     public bool isSwingingBabyToSleepOpened;
+    public bool isSwingComplete;
+    public bool isPutBabySleep;
     public bool isSwingingBabyToSleepPlayed;
     public bool isCloseCurtainOpened;
     public bool isCloseCurtainPlayed;
     public bool isTurnOffLampOpened;
     public bool isTurnOffLampPlayed;
     public bool isInteractPhoto_1Opened;
-    public bool isInteractPhoto_1Played;
     public bool isInteractPhoto_2Opened;
-    public bool isInteractPhoto_2Played;
     public bool isInteractPhoto_3Opened;
-    public bool isInteractPhoto_3Played;
     public bool isInteractPhoto_4Opened;
+    public bool isInteractPhoto_1Played;
+    public bool isInteractPhoto_2Played;
+    public bool isInteractPhoto_3Played;
     public bool isInteractPhoto_4Played;
-    public bool isInteractPhoto1Opened;
-    public bool isInteractPhoto1Played;
-
+    public bool isCameraCollected;
     public bool isTDLCollected;
+    public bool isTDLOpen;
     public bool isMakingMilkOpened;
     public bool isMakingMilkPlayed;
+    public bool isGivingMilkOpened;
+    public bool isGivingMilkDialoguePlayed;
+    public bool isNowGivingMilk;
+    public bool isGivingMilkPlayed;
+    public bool isGivingMilkPlayed2;
+    public bool isGivingMilkPlayed3;
+    public bool isGetWaterOpened;
+    public bool isGoingToGetWater;
+    public bool isGetWaterPlayed;
+    public bool isBoilWaterOpened;
+    public bool isBoilWaterPlayed;
+    public bool isPourWaterOpened;
+    public bool isPourWaterPlayed;
+    public bool isCarryingArrelToBath;
+    public bool isCarryingArrelToBathPlayed;
+    public bool isGetBackBaby;
+    public bool isBathingBabyOpened;
+    public bool isBathingBabyDialoguePlayed;
+    public bool isBathingBabyPlayed;
+    public bool isRepairSwingOpened;
+    public bool isRepairSwingPlayed;
+    public bool isCameraOpened;
+    public bool isPhotoTaken;
+    public bool isDiaryOpened;
 }
 
 public enum MechanicName {  // isi dengan mekanik lain
@@ -52,9 +75,13 @@ public enum MechanicName {  // isi dengan mekanik lain
     interactPhoto2,
     interactPhoto3,
     interactPhoto4,
+    cameraPolaroid,
     toDoList,
     makingMilk,
     givingMilk,
+    getWater,
+    boilWater,
+    pourWater,
     bathingBaby,
     repairSwing,
     photoMemoryAct1,

@@ -11,12 +11,27 @@ public class MakingMilkMechanic : MonoBehaviour
 
     private AudioSource audioSource;
     public int jumlahTuangan = 0;
-    private Image botolSusuImage; 
+    private Image botolSusuImage;
+    private bool isMechanicDone;
+
+    [SerializeField] private GameObject currentMechanic;
+    [SerializeField] private GameObject botolBawa;
 
     void Start()
     {
         //audioSource = GetComponent<AudioSource>();
         botolSusuImage = botolSusu.GetComponent<Image>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && isMechanicDone)
+        {
+            currentMechanic.SetActive(false);
+            MechanicsManager.Instance.isOpenMechanic = false;
+            botolBawa.SetActive(true);
+            isMechanicDone = false;
+        }
     }
 
     public void TambahTuangan()
@@ -37,12 +52,12 @@ public class MakingMilkMechanic : MonoBehaviour
         //    audioSource.PlayOneShot(sfxSelesai);
         //    Debug.Log("Sfx Diputar");
         //}
-        MechanicsManager.Instance.isMakingMilkPlayed = true;
-        Debug.Log("Mekanisme selesai!");
 
         yield return new WaitForSeconds(3f);
-
+        isMechanicDone = true;
         botolSusuImage.sprite = botolSusuPenuhSprite;
+        MechanicsManager.Instance.isMakingMilkPlayed = true;
         Debug.Log("Botol susu telah penuh!");
+        Debug.Log("Mekanisme selesai!");
     }
 }

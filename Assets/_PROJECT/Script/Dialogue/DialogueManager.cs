@@ -70,9 +70,9 @@ namespace DIALOGUE
         private void Update() 
         {
             DialogueCheck();
-            DialogueTrigger.Instance.ChooseDialogue();
+            // DialogueTrigger.Instance.ChooseDialogue();
 
-            if(Input.GetKeyDown(KeyCode.Space)) 
+            if(Input.GetKeyDown(KeyCode.Space) && isRunningConversation) 
             {
                 OnDialogue_Next();
             }
