@@ -6,7 +6,7 @@ public class TurnOffLamp : MonoBehaviour
 {
     public RectTransform buttonOn;
     public RectTransform buttonOff;
-    public float delayLength;
+    public float delayLength = 3f;
 
     Button buttonOnBtn;
     Outline buttonOnOutline;

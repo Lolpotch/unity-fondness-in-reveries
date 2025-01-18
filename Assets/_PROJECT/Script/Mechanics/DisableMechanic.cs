@@ -35,6 +35,10 @@ public class DisableMechanic : MonoBehaviour
                     MechanicsManager.Instance.isCloseCurtainPlayed = true;
                     break;
 
+                case MechanicName.turnOffLamp:
+                    MechanicsManager.Instance.isTurnOffLampPlayed = true;
+                    break;
+
                 case MechanicName.interactPhoto1:
                     MechanicsManager.Instance.isInteractPhoto_1Played = true;
                     break;

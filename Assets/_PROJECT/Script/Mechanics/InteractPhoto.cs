@@ -29,6 +29,30 @@ public class InteractPhoto : MonoBehaviour
                         isButtonAppeared = true;
                     }
                     break;
+
+                case MechanicName.interactPhoto2:
+                    if (DialogueTrigger.Instance.isPlayInteractPhoto2_9Played)
+                    {
+                        disableMechanicButton.gameObject.SetActive(true);
+                        isButtonAppeared = true;
+                    }
+                    break;
+                
+                case MechanicName.interactPhoto3:
+                    if (DialogueTrigger.Instance.isPlayInteractPhoto3_10Played)
+                    {
+                        disableMechanicButton.gameObject.SetActive(true);
+                        isButtonAppeared = true;
+                    }
+                    break;
+
+                case MechanicName.interactPhoto4:
+                    if (DialogueTrigger.Instance.isPlayInteractPhoto4_11Played)
+                    {
+                        disableMechanicButton.gameObject.SetActive(true);
+                        isButtonAppeared = true;
+                    }
+                    break;
             }
         }
     }
