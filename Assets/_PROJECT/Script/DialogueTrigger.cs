@@ -286,11 +286,11 @@ public class DialogueTrigger : MonoBehaviour
         currentDialogue = null;
         isSearchCamera_12Played = true;
 
-        if (isSearchCamera_12Played && !isCollectCamera_13Played) {
-            StartCoroutine(PlayCollectCamera());
-        } else {
-            StopCoroutine(PlayCollectCamera());
-        }
+        // if (isSearchCamera_12Played && !isCollectCamera_13Played) {
+        //     StartCoroutine(PlayCollectCamera());
+        // } else {
+        //     StopCoroutine(PlayCollectCamera());
+        // }
     }
 
     [SerializeField] private bool isCollectCamera_13Played;
