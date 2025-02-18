@@ -17,6 +17,8 @@ public class ObjectTrigger : MonoBehaviour
         mechanicsManager = FindObjectOfType<MechanicsManager>();
         myCollider2D = GetComponent<BoxCollider2D>();
         myCollider2D.enabled = false;
+
+        mechanicsManager.currentMechanic = MechanicName.none;
     }
 
     private void Update() 

@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class DoorTrigger : MonoBehaviour
 {
+    public DoorName doorName;
     [SerializeField] private MechanicsManager mechanicsManager;
     [SerializeField] private GameObject eToInteract;
     [SerializeField] private string sceneName;
@@ -15,12 +16,16 @@ public class DoorTrigger : MonoBehaviour
         mechanicsManager = FindObjectOfType<MechanicsManager>();
         myCollider2D = GetComponent<BoxCollider2D>();
         myCollider2D.enabled = isInteractable;
+
+        SpawnpointManager.instance.currentDoor = DoorName.none;
+        SpawnpointManager.instance.enterDoor = DoorName.none;
     }
 
     private void Update() 
     {
         if (playerInTrigger && !PlayerMovement.Instance.isMakMoving && !mechanicsManager.isOpenMechanic && Input.GetKeyDown(KeyCode.E))
         {
+            SpawnpointManager.instance.enterDoor = doorName;
             ChangeScene(sceneName);
         }
     }
@@ -39,6 +44,7 @@ public class DoorTrigger : MonoBehaviour
             {
                 eToInteract.SetActive(true);
             }
+            SpawnpointManager.instance.currentDoor = doorName;
         }
     }
 
@@ -49,5 +55,6 @@ public class DoorTrigger : MonoBehaviour
             playerInTrigger = false;
             eToInteract.SetActive(false);
         }
+        SpawnpointManager.instance.currentDoor = DoorName.none;
     }
 }

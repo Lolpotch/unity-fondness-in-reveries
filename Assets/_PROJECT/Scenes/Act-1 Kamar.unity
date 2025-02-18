@@ -938,6 +938,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 253579428}
   m_CullTransparentMesh: 1
+--- !u!1 &283144032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 283144033}
+  m_Layer: 0
+  m_Name: Spawn MakDoor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &283144033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 283144032}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 336, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2113962704}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &292805849
 GameObject:
   m_ObjectHideFlags: 0
@@ -5624,6 +5655,50 @@ MonoBehaviour:
   fabricLeftRect: {fileID: 1814995553}
   fabricRightRect: {fileID: 925869286}
   canvasRect: {fileID: 1214640895}
+--- !u!1 &1657625651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1657625653}
+  - component: {fileID: 1657625652}
+  m_Layer: 0
+  m_Name: SpawnTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1657625652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657625651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf5c0cfe9290834c96d1cbe1e165946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1657625653
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657625651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 472.1912, y: -197.84329, z: 2.1552413}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1680406769
 GameObject:
   m_ObjectHideFlags: 0
@@ -7028,7 +7103,7 @@ GameObject:
   - component: {fileID: 1948309922}
   - component: {fileID: 1948309925}
   m_Layer: 0
-  m_Name: ObjPintuKamar
+  m_Name: ObjLeaveMakDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7158,6 +7233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65de3ccfe2bf994493a8beb73f8c72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorName: 1
   mechanicsManager: {fileID: 1062621916}
   eToInteract: {fileID: 19172268}
   sceneName: Act-1 Scene
@@ -7734,6 +7810,7 @@ Transform:
   m_Children:
   - {fileID: 618766047115327674}
   - {fileID: 1948309921}
+  - {fileID: 283144033}
   - {fileID: 6117134986378131972}
   - {fileID: 3855086143892939502}
   - {fileID: 5066229440413731252}
@@ -15645,3 +15722,4 @@ SceneRoots:
   - {fileID: 1062621915}
   - {fileID: 1733424855}
   - {fileID: 2114008090}
+  - {fileID: 1657625653}
