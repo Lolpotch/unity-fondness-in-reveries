@@ -20,15 +20,13 @@ public class TurnOffLamp : MonoBehaviour
         //buttonOnOutline.enabled = false;
 
         buttonOn.gameObject.SetActive(true);
-        buttonOnOutline.gameObject.SetActive(true);
+        buttonOnOutline.gameObject.SetActive(false);
         buttonOff.gameObject.SetActive(false);
     }
 
     void Update()
     {
         buttonOnBtn.interactable = DialogueTrigger.Instance.isTurnOffLamp_6Played;
-        //buttonOnOutline.enabled = DialogueTrigger.Instance.isTurnOffLamp_6Played;
-        buttonOnOutline.gameObject.SetActive(DialogueTrigger.Instance.isTurnOffLamp_6Played);
     }
     
     public void TurnOffLampButton()
@@ -39,6 +37,19 @@ public class TurnOffLamp : MonoBehaviour
         // MechanicsManager.Instance.isTurnOffLampPlayed = true;
         StartCoroutine(DisableMechanic());
         // Abis itu matiin mekanik ini
+    }
+
+    public void OnPointerEnterButton()
+    {
+        if (buttonOnBtn.interactable)
+        {
+            buttonOnOutline.gameObject.SetActive(true);
+        }
+    }
+
+    public void OnPointerExitButton()
+    {
+        buttonOnOutline.gameObject.SetActive(false);
     }
 
     private IEnumerator DisableMechanic()
