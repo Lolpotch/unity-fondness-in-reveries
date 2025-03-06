@@ -83,7 +83,7 @@ namespace DIALOGUE
         [SerializeField] private TextAsset currentDialogue;
         private void DialogueCheck()
         {
-            if (SceneManager.GetActiveScene().name == "Act-1 Scene")
+            if (SceneManager.GetActiveScene().name == "Act-1 Kamar Ibu" || SceneManager.GetActiveScene().name == "Act-1 Ruang Tamu")
             {
                 currentDialogue = triggerAct_1.currentDialogue;
             }

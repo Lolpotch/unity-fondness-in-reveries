@@ -18,9 +18,9 @@ public class NotificationManager : MonoBehaviour
     [SerializeField] private GameObject notifMoveSide;
     [SerializeField] private GameObject notifCameraCollected;
     [SerializeField] private GameObject notifTDLCollected;
-    [SerializeField] private GameObject notifFToOpenTDL;
-    [SerializeField] private GameObject notifOpenCamera;
-    [SerializeField] private GameObject notifOpenDiary;
+    [SerializeField] private GameObject notifFOpenTDL;
+    [SerializeField] private GameObject notifEReadyCamera;
+    [SerializeField] private GameObject notifEOpenDiary;
 
     private IEnumerator FadeInNotif(GameObject notif, float duration)
     {
@@ -98,27 +98,27 @@ public class NotificationManager : MonoBehaviour
         StopCoroutine(NotifTDLCollected());
     }
 
-    public IEnumerator NotifFToOpenTDL()
+    public IEnumerator NotifFOpenTDL()
     {
-        yield return StartCoroutine(FadeInNotif(notifFToOpenTDL, 0.4f));
+        yield return StartCoroutine(FadeInNotif(notifFOpenTDL, 0.4f));
         yield return new WaitUntil (() => MechanicsManager.Instance.isTDLOpen);
-        yield return StartCoroutine(FadeOutNotif(notifFToOpenTDL, 0.4f));
-        StopCoroutine(NotifFToOpenTDL());
+        yield return StartCoroutine(FadeOutNotif(notifFOpenTDL, 0.4f));
+        StopCoroutine(NotifFOpenTDL());
     }
 
-    public IEnumerator NotifOpenCamera()
+    public IEnumerator NotifEReadyCamera()
     {
-        yield return StartCoroutine(FadeInNotif(notifOpenCamera, 0.4f));
-        yield return new WaitUntil (() => MechanicsManager.Instance.isCameraOpened);
-        yield return StartCoroutine(FadeOutNotif(notifOpenCamera, 0.4f));
-        StopCoroutine(NotifOpenCamera());
+        yield return StartCoroutine(FadeInNotif(notifEReadyCamera, 0.4f));
+        yield return new WaitUntil (() => MechanicsManager.Instance.isCameraReady);
+        yield return StartCoroutine(FadeOutNotif(notifEReadyCamera, 0.4f));
+        StopCoroutine(NotifEReadyCamera());
     }
 
-    public IEnumerator NotifOpenDiary()
+    public IEnumerator NotifEOpenDiary()
     {
-        yield return StartCoroutine(FadeInNotif(notifOpenDiary, 0.4f));
+        yield return StartCoroutine(FadeInNotif(notifEOpenDiary, 0.4f));
         yield return new WaitUntil (() => MechanicsManager.Instance.isDiaryOpened);
-        yield return StartCoroutine(FadeOutNotif(notifOpenDiary, 0.4f));
-        StopCoroutine(NotifOpenDiary());
+        yield return StartCoroutine(FadeOutNotif(notifEOpenDiary, 0.4f));
+        StopCoroutine(NotifEOpenDiary());
     }
 }

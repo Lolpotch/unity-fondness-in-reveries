@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -27,11 +26,15 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private MechanicsManager mechanicsManager;
+    [SerializeField] private PauseMenu pauseMenu;
+    [SerializeField] private ToDoList toDoList;
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         mechanicsManager = FindObjectOfType<MechanicsManager>();
+        pauseMenu = FindObjectOfType<PauseMenu>();
+        toDoList = FindObjectOfType<ToDoList>();
     }
 
     private void Update() 
@@ -40,12 +43,11 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isMakCrouching", isMakCrouching);
         animator.SetBool("isMakMoving", isMakMoving);
         
-        if (!mechanicsManager.isOpenMechanic)
+        if (mechanicsManager.isGameStart && !mechanicsManager.isOpenMechanic && !pauseMenu.isMenuActive && !toDoList.isTDLOpen)
         {
-            if (!isMakTiptoe && !isMakCrouching && mechanicsManager.isGameStart) // kondisi jalan normal
+            if (!isMakTiptoe && !isMakCrouching) // kondisi jalan normal
             {
                 moveSpeed = 500f;
-                MovementAD();
                 if (movement != Vector2.zero)
                 {    
                     isMakMoving = true;
@@ -63,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
             else if (isMakTiptoe || isMakCrouching)
             {   
                 moveSpeed = 200f;
-                MovementAD();
                 if (movement != Vector2.zero)
                 {
                     animator.SetFloat("Horizontal", movement.x);
@@ -74,34 +75,6 @@ public class PlayerMovement : MonoBehaviour
                     animator.SetFloat("Horizontal", 0); // Set ke Idle
                 }
             }
-
-            var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-            
-            if ((isMakTiptoe == true || isMakCrouching == true) && Input.GetKeyDown(KeyCode.LeftShift)) 
-            {
-                isMakTiptoe = false;
-                isMakCrouching = false;
-                framingTransposer.m_ScreenY = 0.5f;
-                transform.position = new Vector2(transform.position.x, 0);
-            }
-
-            // Kondisi Tiptoe
-            if (!isMakMoving && Input.GetKeyDown(KeyCode.W))
-            {
-                isMakTiptoe = true;
-                isMakCrouching = false;
-                framingTransposer.m_ScreenY = 0.6f;
-                transform.position = new Vector2(transform.position.x, 50);
-            }
-
-            // Kondisi Crouch
-            if (!isMakMoving && Input.GetKeyDown(KeyCode.S))
-            {
-                isMakCrouching = true;
-                isMakTiptoe = false;
-                framingTransposer.m_ScreenY = 0.4f;
-                transform.position = new Vector2(transform.position.x, -50);
-            }
         }
     }
 
@@ -110,10 +83,53 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
-    private void MovementAD()
+    private void OnWalk(InputValue value)
     {
-        if (Input.GetKey(KeyCode.A)) { movement.x = -1; }
-        else if (Input.GetKey(KeyCode.D)) { movement.x = 1; }
-        else { movement.x = 0; }
+        if(mechanicsManager.isGameStart)
+        {
+            movement = value.Get<Vector2>();
+        }
+    }
+
+    private void OnTiptoe(InputValue value)
+    {
+        bool isTiptoePressed = value.isPressed;
+        
+        var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        if (!isMakMoving && isTiptoePressed)
+        {
+            isMakTiptoe = true;
+            isMakCrouching = false;
+            framingTransposer.m_ScreenY = 0.6f;
+            transform.position = new Vector2(transform.position.x, 50);
+        }
+    }
+
+    private void OnCrouching(InputValue value)
+    {
+        bool isCrouchPressed = value.isPressed;
+        
+        var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        if (!isMakMoving && isCrouchPressed)
+        {
+            isMakCrouching = true;
+            isMakTiptoe = false;
+            framingTransposer.m_ScreenY = 0.4f;
+            transform.position = new Vector2(transform.position.x, -50);
+        }
+    }
+
+    private void OnNormal(InputValue value)
+    {
+        bool isNormalPressed = value.isPressed;
+        
+        var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        if ((isMakTiptoe == true || isMakCrouching == true) && isNormalPressed)
+        {
+            isMakTiptoe = false;
+            isMakCrouching = false;
+            framingTransposer.m_ScreenY = 0.5f;
+            transform.position = new Vector2(transform.position.x, 0);
+        }
     }
 }

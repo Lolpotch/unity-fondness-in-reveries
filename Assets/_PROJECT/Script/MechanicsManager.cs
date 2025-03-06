@@ -62,9 +62,11 @@ public class MechanicsManager : MonoBehaviour
     public bool isBathingBabyPlayed;
     public bool isRepairSwingOpened;
     public bool isRepairSwingPlayed;
+    public bool isCameraReady;
     public bool isCameraOpened;
     public bool isPhotoTaken;
     public bool isDiaryOpened;
+    public bool isPhotoDragged;
 }
 
 public enum MechanicName {  // isi dengan mekanik lain
@@ -86,5 +88,6 @@ public enum MechanicName {  // isi dengan mekanik lain
     repairSwing,
     photoMemoryAct1,
     diaryBook,
+    doorLivingRoom,
     none
 }

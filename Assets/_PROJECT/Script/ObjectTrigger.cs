@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DIALOGUE;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ObjectTrigger : MonoBehaviour
 {
@@ -11,12 +12,22 @@ public class ObjectTrigger : MonoBehaviour
     [SerializeField] private GameObject mechanics;
     [SerializeField] private bool playerInTrigger = false;
     private BoxCollider2D myCollider2D;
+    
+    [Header("Hover Sprite")]
+    private SpriteRenderer hoverSprite;
+    [SerializeField] private Sprite hoverBed;
+    [SerializeField] private Sprite hoverCurtain;
+    [SerializeField] private Sprite hoverSwitchLamp;
+    [SerializeField] private Sprite hoverDoor;
 
     private void Start() 
     {
         mechanicsManager = FindObjectOfType<MechanicsManager>();
         myCollider2D = GetComponent<BoxCollider2D>();
         myCollider2D.enabled = false;
+
+        hoverSprite = GetComponent<SpriteRenderer>();
+        hoverSprite.sprite = null;
 
         mechanicsManager.currentMechanic = MechanicName.none;
     }
@@ -30,7 +41,7 @@ public class ObjectTrigger : MonoBehaviour
             RunMechanic();
         }
 
-        if (mechanicName == MechanicName.photoMemoryAct1 && playerInTrigger && mechanicsManager.isRepairSwingPlayed && Input.GetKeyDown(KeyCode.E))
+        if (mechanicName == MechanicName.photoMemoryAct1 && playerInTrigger && !DialogueManager.instance.isRunningConversation && Input.GetKeyDown(KeyCode.E))
         {
             RunMechanic();
         }
@@ -41,35 +52,48 @@ public class ObjectTrigger : MonoBehaviour
         switch(mechanicName)
         {
             case MechanicName.swingingBabyToSleep:
-                if (!mechanicsManager.isSwingingBabyToSleepPlayed)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                if (!mechanicsManager.isSwingingBabyToSleepPlayed) { 
+                    myCollider2D.enabled = true;
+                    hoverSprite.sprite = hoverBed;
+                } else { 
+                    myCollider2D.enabled = false;
+                    hoverSprite.sprite = null;
+                }
                 break;
 
             case MechanicName.closeCurtain:
-                if (mechanicsManager.isSwingingBabyToSleepPlayed && !mechanicsManager.isCloseCurtainPlayed)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                if (mechanicsManager.isSwingingBabyToSleepPlayed && !mechanicsManager.isCloseCurtainPlayed) { 
+                    myCollider2D.enabled = true;
+                    hoverSprite.sprite = hoverCurtain;
+                } else { 
+                    myCollider2D.enabled = false;
+                    hoverSprite.sprite = null;
+                }
                 break;
 
             case MechanicName.turnOffLamp:
-                if (mechanicsManager.isCloseCurtainPlayed && !mechanicsManager.isTurnOffLampPlayed)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                if (mechanicsManager.isCloseCurtainPlayed && !mechanicsManager.isTurnOffLampPlayed) { 
+                    myCollider2D.enabled = true;
+                    hoverSprite.sprite = hoverSwitchLamp;
+                } else {
+                    myCollider2D.enabled = false;
+                    hoverSprite.sprite = null;
+                }
+                break;
+
+            case MechanicName.doorLivingRoom:
+                if (mechanicsManager.isTurnOffLampPlayed) {
+                    myCollider2D.enabled = true;
+                    hoverSprite.sprite = hoverDoor;
+                } else { 
+                    myCollider2D.enabled = false;
+                    hoverSprite.sprite = null;
+                }
                 break;
 
             case MechanicName.interactPhoto1:
-                if (mechanicsManager.isTurnOffLampPlayed)
-                { myCollider2D.enabled = true; }
-                break;
-
             case MechanicName.interactPhoto2:
-                if (mechanicsManager.isTurnOffLampPlayed)
-                { myCollider2D.enabled = true; }
-                break;
-            
             case MechanicName.interactPhoto3:
-                if (mechanicsManager.isTurnOffLampPlayed)
-                { myCollider2D.enabled = true; }
-                break;
-            
             case MechanicName.interactPhoto4:
                 if (mechanicsManager.isTurnOffLampPlayed)
                 { myCollider2D.enabled = true; }
@@ -127,6 +151,11 @@ public class ObjectTrigger : MonoBehaviour
                 if (mechanicsManager.isRepairSwingPlayed && !mechanicsManager.isPhotoTaken)
                 { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
                 break;
+
+            case MechanicName.diaryBook:
+                if (mechanicsManager.isPhotoTaken && !mechanicsManager.isOpenMechanic && !mechanicsManager.isDiaryOpened)
+                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                break;
         }
     }
 
@@ -135,38 +164,35 @@ public class ObjectTrigger : MonoBehaviour
         switch(mechanicName)
         {
             case MechanicName.swingingBabyToSleep:
-                OpenMechanics();
-                mechanicsManager.isSwingingBabyToSleepOpened = true;
+                OpenMechanics(ref mechanicsManager.isSwingingBabyToSleepOpened);
                 break;
 
             case MechanicName.closeCurtain:
-                OpenMechanics();
-                mechanicsManager.isCloseCurtainOpened = true;
+                OpenMechanics(ref mechanicsManager.isCloseCurtainOpened);
                 break;
 
             case MechanicName.turnOffLamp:
-                OpenMechanics();
-                mechanicsManager.isTurnOffLampOpened = true;
+                OpenMechanics(ref mechanicsManager.isTurnOffLampOpened);
+                break;
+
+            case MechanicName.doorLivingRoom:
+                SceneManager.LoadScene("Act-1 Ruang Tamu");
                 break;
 
             case MechanicName.interactPhoto1:
-                OpenMechanics(); 
-                mechanicsManager.isInteractPhoto_1Opened = true;
+                OpenMechanics(ref mechanicsManager.isInteractPhoto_1Opened);
                 break;
                 
             case MechanicName.interactPhoto2:
-                OpenMechanics();
-                mechanicsManager.isInteractPhoto_2Opened = true;
+                OpenMechanics(ref mechanicsManager.isInteractPhoto_2Opened);
                 break;
 
             case MechanicName.interactPhoto3:
-                OpenMechanics();
-                mechanicsManager.isInteractPhoto_3Opened = true;
+                OpenMechanics(ref mechanicsManager.isInteractPhoto_3Opened);
                 break;
 
             case MechanicName.interactPhoto4:
-                OpenMechanics();
-                mechanicsManager.isInteractPhoto_4Opened = true;
+                OpenMechanics(ref mechanicsManager.isInteractPhoto_4Opened);
                 break;
 
             case MechanicName.cameraPolaroid:
@@ -176,57 +202,57 @@ public class ObjectTrigger : MonoBehaviour
                 break;
 
             case MechanicName.toDoList:
-                OpenMechanics();
+                eToInteract.SetActive(false);
                 mechanicsManager.isOpenMechanic = false;
                 mechanicsManager.isTDLCollected = true;
                 gameObject.SetActive(false);
                 break;
 
             case MechanicName.makingMilk:
-                OpenMechanics();
-                mechanicsManager.isMakingMilkOpened = true;
+                OpenMechanics(ref mechanicsManager.isMakingMilkOpened);
                 break;
 
             case MechanicName.givingMilk:
                 if (mechanicsManager.isMakingMilkPlayed && !mechanicsManager.isGivingMilkPlayed && !mechanicsManager.isCarryingArrelToBath)
                 {
-                    OpenMechanics();
-                    mechanicsManager.isGivingMilkOpened = true;
+                    OpenMechanics(ref mechanicsManager.isGivingMilkOpened);
                 }
                 else if (mechanicsManager.isPourWaterPlayed && !mechanicsManager.isCarryingArrelToBath && !mechanicsManager.isGetBackBaby)
                 {
-                    OpenMechanics();
-                    mechanicsManager.isGetWaterOpened = true;
+                    OpenMechanics(ref mechanicsManager.isGetWaterOpened);
                 }
                 break;
 
             case MechanicName.getWater:
-                OpenMechanics();
-                mechanicsManager.isGetWaterOpened = true;
+                OpenMechanics(ref mechanicsManager.isGetWaterOpened);
                 break;
 
             case MechanicName.boilWater:
-                OpenMechanics();
-                mechanicsManager.isBoilWaterOpened = true;
+                OpenMechanics(ref mechanicsManager.isBoilWaterOpened);
                 break;
 
             case MechanicName.pourWater:
-                OpenMechanics();
-                mechanicsManager.isPourWaterOpened = true;
+                OpenMechanics(ref mechanicsManager.isPourWaterOpened);
                 break;
 
             case MechanicName.bathingBaby:
-                OpenMechanics();
-                mechanicsManager.isBathingBabyOpened = true;
+                OpenMechanics(ref mechanicsManager.isBathingBabyOpened);
                 break;
 
             case MechanicName.repairSwing:
-                OpenMechanics();
-                mechanicsManager.isRepairSwingOpened = true;
+                OpenMechanics(ref mechanicsManager.isRepairSwingOpened);
                 break;
 
             case MechanicName.photoMemoryAct1:
-                OpenMechanics();
+                mechanics.SetActive(true);
+                mechanicsManager.isOpenMechanic = true;
+                mechanicsManager.isCameraReady = true;
+                break;
+
+            case MechanicName.diaryBook:
+                mechanics.SetActive(true);
+                mechanicsManager.isOpenMechanic = true;
+                mechanicsManager.isDiaryOpened = true;
                 break;
 
             case MechanicName.none:
@@ -259,10 +285,11 @@ public class ObjectTrigger : MonoBehaviour
         mechanicsManager.currentMechanic = MechanicName.none;
     }
 
-    private void OpenMechanics()
+    private void OpenMechanics(ref bool booleanMechanics)
     {
         eToInteract.SetActive(false);
         mechanics.SetActive(true);
-        mechanicsManager.isOpenMechanic = mechanics.activeSelf;
+        mechanicsManager.isOpenMechanic = true;
+        booleanMechanics = true;
     }
 }

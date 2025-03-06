@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7327008447380636800
+--- !u!1 &1106243928997056909
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6366483654979013673}
-  - component: {fileID: 2341129898861248886}
-  - component: {fileID: 3468535286688653278}
-  - component: {fileID: 2243413741794682378}
+  - component: {fileID: 5993896800889168507}
+  - component: {fileID: 8902123277525702193}
+  - component: {fileID: 3523407202738069235}
+  - component: {fileID: 8136405694369044396}
   m_Layer: 0
   m_Name: ObjSwingingBabyToSleep
   m_TagString: Untagged
@@ -19,13 +19,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6366483654979013673
+--- !u!4 &5993896800889168507
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7327008447380636800}
+  m_GameObject: {fileID: 1106243928997056909}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 721, y: 0, z: 0}
@@ -34,13 +34,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &2341129898861248886
+--- !u!61 &8902123277525702193
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7327008447380636800}
+  m_GameObject: {fileID: 1106243928997056909}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -79,13 +79,13 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 100, y: 40}
   m_EdgeRadius: 0
---- !u!114 &3468535286688653278
+--- !u!114 &3523407202738069235
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7327008447380636800}
+  m_GameObject: {fileID: 1106243928997056909}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecd617e60a50b44b85d8a7be75de1a3, type: 3}
@@ -96,13 +96,13 @@ MonoBehaviour:
   eToInteract: {fileID: 0}
   mechanics: {fileID: 0}
   playerInTrigger: 0
---- !u!212 &2243413741794682378
+--- !u!212 &8136405694369044396
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7327008447380636800}
+  m_GameObject: {fileID: 1106243928997056909}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
