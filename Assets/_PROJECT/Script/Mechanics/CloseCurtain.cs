@@ -1,14 +1,19 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using DIALOGUE;
 
 public class CloseCurtain : MonoBehaviour
 {
+    [SerializeField] private GameObject curentMechanic; 
     public RectTransform guideRight;
     public RectTransform guideLeft;
     public Slider sliderLeft, sliderRight;
 
     public float delayLength = 3f;
+
+    public Image[] fadeIn1;
+    bool activeOnce = false;
 
     bool isRightSwiped = false;
     bool isLeftSwiped = false;
@@ -31,6 +36,13 @@ public class CloseCurtain : MonoBehaviour
 
     void Update()
     {
+        // Fade in first time
+        if (curentMechanic.activeSelf && !activeOnce)
+        {
+            activeOnce = true;
+            FadeManager.Instance.FadeIn(fadeIn1, 1f);
+        }
+
         if (DialogueTrigger.Instance.isCloseCurtain_5Played)
         {
             if (!isMechanicBegin)
@@ -83,18 +95,15 @@ public class CloseCurtain : MonoBehaviour
                 {
                     Debug.Log("Both swipes completed");
 
-                    StartCoroutine(DisableMechanic());
-                    // MechanicsManager.Instance.isCloseCurtainPlayed = true;
-                    // You can add further actions here
+                    MechanicsManager.Instance.isCloseCurtainPlayed = true;
                 }
             }
+
+            if (MechanicsManager.Instance.isCloseCurtainPlayed && !DialogueManager.instance.isRunningConversation && Input.GetKeyDown(KeyCode.Space))
+            {
+                curentMechanic.SetActive(false);
+                MechanicsManager.Instance.isOpenMechanic = false;
+            }
         }
-    }
-
-    private IEnumerator DisableMechanic()
-    {
-        yield return new WaitForSeconds(delayLength);
-
-        GetComponent<DisableMechanic>().DisableThisMechanic();
     }
 }

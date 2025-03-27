@@ -1,15 +1,20 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using DIALOGUE;
 
 public class SwingBabyToSleep : MonoBehaviour
 {
+    [SerializeField] private GameObject curentMechanic;
+    public RectTransform background;
     public RectTransform baby;
     public RectTransform basket;
     public RectTransform basketWithBaby;
     public RectTransform guideLeft;
     public RectTransform guideRight;
     public RectTransform babyPanel;
+
+    public Image[] fadeIn1;
 
     public float speed = 200f;
     public float pointLeft = -10f;
@@ -19,16 +24,32 @@ public class SwingBabyToSleep : MonoBehaviour
 
     Button basketButton;
     Outline basketOutline;
+    Image guideLeftImg;
+    Image guideRightImg;
 
     int swingCount = 0;
     bool isSwingDialogueTriggered = false;
-    bool isBabySleepDialogueTriggered = false;
+    // bool isBabySleepDialogueTriggered = false;
     bool movingLeft = true;
+    bool activeOnce = false;
 
     void Start()
     {
         guideLeft.gameObject.SetActive(true);
-        guideRight.gameObject.SetActive(false);
+        guideRight.gameObject.SetActive(true);
+
+        guideLeftImg = guideLeft.GetComponent<Image>();
+        guideRightImg = guideRight.GetComponent<Image>();
+        
+        Color colorLeft = guideLeftImg.color;
+        Color colorRight = guideRightImg.color;
+        colorLeft.a = 0f;
+        colorRight.a = 0f;
+        
+        // both guide color to 0a
+        guideLeftImg.color = colorLeft; 
+        guideRightImg.color = colorRight;
+        
         babyPanel.gameObject.SetActive(false);
         basket.gameObject.SetActive(true);
         basketWithBaby.gameObject.SetActive(false);
@@ -44,6 +65,15 @@ public class SwingBabyToSleep : MonoBehaviour
     }
     void Update()
     {
+        if (curentMechanic.activeSelf && !activeOnce)
+        {
+            activeOnce = true;
+            // FadeManager.Instance.FadeIn(fadeIn1, 1f);
+            background.GetComponent<FadeImage>().FadeIn(1f);
+            baby.GetComponent<FadeImage>().FadeIn(1f);
+            guideLeft.GetComponent<FadeImage>().FadeIn(1f);
+        }
+
         if (!MechanicsManager.Instance.isSwingComplete)
         {
             if (movingLeft && Input.GetKey(KeyCode.Q))
@@ -59,17 +89,26 @@ public class SwingBabyToSleep : MonoBehaviour
         if (DialogueTrigger.Instance.isSwingingBaby_3Played && !isSwingDialogueTriggered)
         {
             isSwingDialogueTriggered = true;
-
             basketOutline.enabled = true;
             basketButton.interactable = true;
         }
 
-        if (DialogueTrigger.Instance.isPutBabySleep_4Played && !isBabySleepDialogueTriggered)
-        {
-            isBabySleepDialogueTriggered = true;
+        // if (DialogueTrigger.Instance.isPutBabySleep_4Played && !isBabySleepDialogueTriggered)
+        // {
+        //     isBabySleepDialogueTriggered = true;
 
-            StartCoroutine(DisableMechanic());
+        //     StartCoroutine(DisableMechanic());
+        // }
+        if (MechanicsManager.Instance.isSwingingBabyToSleepPlayed && DialogueTrigger.Instance.isPutBabySleep_4Played && !DialogueManager.instance.isRunningConversation && Input.GetKeyDown(KeyCode.Space))
+        {
+            SetMechanic(false);
         }
+    }
+
+    public void SetMechanic(bool value)
+    {
+        curentMechanic.SetActive(value);
+        MechanicsManager.Instance.isOpenMechanic = value;    
     }
     
     public void PlaySleepBabyAnim()
@@ -93,13 +132,7 @@ public class SwingBabyToSleep : MonoBehaviour
         yield return new WaitForSeconds(delayLength);
 
         MechanicsManager.Instance.isPutBabySleep = true;
-    }
-
-    private IEnumerator DisableMechanic()
-    {
-        yield return new WaitForSeconds(delayLength);
-
-        GetComponent<DisableMechanic>().DisableThisMechanic();
+        MechanicsManager.Instance.isSwingingBabyToSleepPlayed = true;
     }
 
     void MoveBaby(float target)
@@ -128,15 +161,54 @@ public class SwingBabyToSleep : MonoBehaviour
         movingLeft = !movingLeft;
         swingCount++;
 
-        guideLeft.gameObject.SetActive(movingLeft);
-        guideRight.gameObject.SetActive(!movingLeft);
-        
+        // guideLeft.gameObject.SetActive(movingLeft); // INI BAKAL GA BENER
+        // guideRight.gameObject.SetActive(!movingLeft); // INI BAKAL GA BENER
+
+        // Image[] guideLefts = {guideLeft.GetComponent<Image>()};
+        // Image[] guideRights = {guideRight.GetComponent<Image>()};
+
+
         if (swingCount >= swingCountRequired)
         {
             MechanicsManager.Instance.isSwingComplete = true;
             
-            guideLeft.gameObject.SetActive(false);
-            guideRight.gameObject.SetActive(false);
+            // guideLeft.gameObject.SetActive(false);
+            // guideRight.gameObject.SetActive(false);
+
+            guideRight.GetComponent<FadeImage>().FadeOut(.7f);
+
+            // if (movingLeft)
+            // {guideLeft.GetComponent<FadeImage>().FadeOut(.7f);}
+            // else
+            // {guideRight.GetComponent<FadeImage>().FadeOut(.7f);}
         }
+        else
+        {
+            if (movingLeft)
+            {
+                // FadeManager.Instance.FadeIn(guideLefts, 1f);
+                // FadeManager.Instance.FadeOut(guideRights, 1f);
+
+                guideLeft.GetComponent<FadeImage>().FadeIn(.7f);
+                guideRight.GetComponent<FadeImage>().FadeOut(.7f);
+            }
+            else
+            {
+                // FadeManager.Instance.FadeOut(guideLefts, 1f);
+                // FadeManager.Instance.FadeIn(guideRights, 1f);
+
+                guideLeft.GetComponent<FadeImage>().FadeOut(.7f);
+                guideRight.GetComponent<FadeImage>().FadeIn(.7f);
+            }
+        }
+        
+        
     }
+
+    // private IEnumerator DisableMechanic()
+    // {
+    //     yield return new WaitForSeconds(delayLength);
+
+    //     GetComponent<DisableMechanic>().DisableThisMechanic();
+    // }
 }
