@@ -51,6 +51,8 @@ public class DialogueTrigger : MonoBehaviour
     //DialogueManager.instance.StartConversation();
     private void Start()
     {
+        currentDialogue = startHumming_1;
+
         if (!isStartHumming_1Played) {
             StartCoroutine(PlayStartHumming());
         } else {
@@ -67,9 +69,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private bool isStartHumming_1Played;
     private IEnumerator PlayStartHumming()
     {
-        yield return new WaitForSeconds(1.5f);
-        currentDialogue = startHumming_1;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
         DialogueManager.instance.StartConversation();
         
         yield return new WaitUntil (() => !DialogueManager.instance.isRunningConversation);
@@ -165,7 +165,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] public bool isTurnOffLamp_6Played = false;
     private IEnumerator PlayTurnOffLamp()
     {
-        yield return new WaitUntil (() => MechanicsManager.Instance.isTurnOffLampOpened);
+        yield return new WaitUntil (() => !MechanicsManager.Instance.isOpenMechanic);
         yield return new WaitForSeconds(1f);
         currentDialogue = turnOffLamp_6;
         yield return new WaitForSeconds(0.5f);

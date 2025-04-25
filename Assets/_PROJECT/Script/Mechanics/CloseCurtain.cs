@@ -6,14 +6,18 @@ using DIALOGUE;
 public class CloseCurtain : MonoBehaviour
 {
     [SerializeField] private GameObject curentMechanic; 
+    public GameObject blackPanelIn, blackPanelOut;
+    public RectTransform background;
     public RectTransform guideRight;
     public RectTransform guideLeft;
+    public RectTransform space;
     public Slider sliderLeft, sliderRight;
 
     public float delayLength = 3f;
 
     public Image[] fadeIn1;
     bool activeOnce = false;
+    bool activeSpaceOnce = false;
 
     bool isRightSwiped = false;
     bool isLeftSwiped = false;
@@ -21,6 +25,8 @@ public class CloseCurtain : MonoBehaviour
 
     void Start()
     {
+        blackPanelOut.SetActive(false);
+        
         guideRight.gameObject.SetActive(false);
         guideLeft.gameObject.SetActive(false);
 
@@ -37,10 +43,11 @@ public class CloseCurtain : MonoBehaviour
     void Update()
     {
         // Fade in first time
-        if (curentMechanic.activeSelf && !activeOnce)
+        if (blackPanelIn.activeSelf && !activeOnce)
         {
             activeOnce = true;
-            FadeManager.Instance.FadeIn(fadeIn1, 1f);
+            //FadeManager.Instance.FadeIn(fadeIn1, 1f);
+            blackPanelIn.GetComponent<FadeImage>().FadeInOut(.7f);
         }
 
         if (DialogueTrigger.Instance.isCloseCurtain_5Played)
@@ -99,11 +106,33 @@ public class CloseCurtain : MonoBehaviour
                 }
             }
 
-            if (MechanicsManager.Instance.isCloseCurtainPlayed && !DialogueManager.instance.isRunningConversation && Input.GetKeyDown(KeyCode.Space))
+            if (MechanicsManager.Instance.isCloseCurtainPlayed && !DialogueManager.instance.isRunningConversation)
             {
-                curentMechanic.SetActive(false);
-                MechanicsManager.Instance.isOpenMechanic = false;
+                if (!activeSpaceOnce)
+                {
+                    space.gameObject.SetActive(true);
+                    space.GetComponent<FadeImage>().FadeIn(1f);
+
+                    activeSpaceOnce = true;
+                }
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.Space) && space.gameObject.activeInHierarchy)
+                    {
+                        // SetMechanic(false);
+                        blackPanelOut.SetActive(true);
+                        blackPanelOut.GetComponent<FadeImage>().FadeInOut(.7f);
+                        // background.GetComponent<FadeImage>().FadeOut(1f);
+                        // space.GetComponent<FadeImage>().FadeOut(1f);
+                    }
+                }
             }
         }
+    }
+
+    public void SetMechanic(bool value)
+    {
+        curentMechanic.SetActive(value);
+        MechanicsManager.Instance.isOpenMechanic = value;    
     }
 }

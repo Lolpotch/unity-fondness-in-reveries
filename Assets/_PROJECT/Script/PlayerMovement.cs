@@ -24,10 +24,15 @@ public class PlayerMovement : MonoBehaviour
     public bool isMakReach = false;
     public bool isMakCrouching = false;
 
+    [SerializeField] private float cameraOffsetSmoothTime = 0.3f;
+    private float currentCameraOffset = 0f;
+    private float cameraOffsetVelocity = 0f;
+
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private MechanicsManager mechanicsManager;
     [SerializeField] private PauseMenu pauseMenu;
     [SerializeField] private ToDoList toDoList;
+    
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -47,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!isMakReach && !isMakCrouching) // kondisi jalan normal
             {
-                moveSpeed = 500f;
+                moveSpeed = 300f;
                 if (movement != Vector2.zero)
                 {    
                     isMakMoving = true;
@@ -75,6 +80,22 @@ public class PlayerMovement : MonoBehaviour
                     animator.SetFloat("Horizontal", 0); // Set ke Idle
                 }
             }
+
+            var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            float targetOffset = 0f;
+            float lastHorizontal = animator.GetFloat("LastHorizontal");
+            
+            if (lastHorizontal > 0)
+            {
+                targetOffset = 200f;
+            }
+            else if (lastHorizontal < 0)
+            {
+                targetOffset = -200f;
+            }
+
+            currentCameraOffset = Mathf.SmoothDamp(currentCameraOffset, targetOffset, ref cameraOffsetVelocity, cameraOffsetSmoothTime);
+            framingTransposer.m_TrackedObjectOffset.x = currentCameraOffset;
         }
     }
 
@@ -91,33 +112,35 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void OnReach(InputValue value)
-    {
-        bool isReachPressed = value.isPressed;
-        
-        var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        if (!isMakMoving && isReachPressed)
-        {
-            isMakReach = true;
-            isMakCrouching = false;
-            framingTransposer.m_ScreenY = 0.6f;
-            transform.position = new Vector2(transform.position.x, 50);
-        }
-    }
 
-    private void OnCrouching(InputValue value)
-    {
-        bool isCrouchPressed = value.isPressed;
+    // ### Pending Dulu ###
+    // private void OnReach(InputValue value)
+    // {
+    //     bool isReachPressed = value.isPressed;
         
-        var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        if (!isMakMoving && isCrouchPressed)
-        {
-            isMakCrouching = true;
-            isMakReach = false;
-            framingTransposer.m_ScreenY = 0.4f;
-            transform.position = new Vector2(transform.position.x, -50);
-        }
-    }
+    //     var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+    //     if (!isMakMoving && isReachPressed)
+    //     {
+    //         isMakReach = true;
+    //         isMakCrouching = false;
+    //         framingTransposer.m_ScreenY = 0.6f;
+    //         transform.position = new Vector2(transform.position.x, 50);
+    //     }
+    // }
+
+    // private void OnCrouching(InputValue value)
+    // {
+    //     bool isCrouchPressed = value.isPressed;
+        
+    //     var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+    //     if (!isMakMoving && isCrouchPressed)
+    //     {
+    //         isMakCrouching = true;
+    //         isMakReach = false;
+    //         framingTransposer.m_ScreenY = 0.4f;
+    //         transform.position = new Vector2(transform.position.x, -50);
+    //     }
+    // }
 
     private void OnNormal(InputValue value)
     {

@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class NotificationManager : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class NotificationManager : MonoBehaviour
             return;
         } else Instance = this;
         DontDestroyOnLoad(gameObject); // Jika perlu instance bertahan antar scene
+        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
     [SerializeField] private GameObject notifMoveSide;
@@ -21,6 +24,30 @@ public class NotificationManager : MonoBehaviour
     [SerializeField] private GameObject notifFOpenTDL;
     [SerializeField] private GameObject notifEReadyCamera;
     [SerializeField] private GameObject notifEOpenDiary;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        GameObject mainCanvas = GameObject.Find("Canvas - Main");
+        GameObject worldCanvas = GameObject.Find("Canvas - World");
+        RectTransform UIGroup = mainCanvas.transform.Find("[9] - UI") as RectTransform;
+
+        notifMoveSide = worldCanvas.transform.Find("NotifMoveSide").gameObject;
+        notifCameraCollected = UIGroup.transform.Find("NotifCameraCollected").gameObject;
+        notifTDLCollected = UIGroup.transform.Find("NotifTDLCollected").gameObject;
+        notifFOpenTDL = UIGroup.transform.Find("Notif F OpenTDL").gameObject;
+        notifEReadyCamera = UIGroup.transform.Find("Notif E ReadyCamera").gameObject;
+        notifEOpenDiary = UIGroup.transform.Find("Notif E OpenDiary").gameObject;
+    }
 
     private IEnumerator FadeInNotif(GameObject notif, float duration)
     {

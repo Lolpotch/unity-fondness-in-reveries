@@ -2,9 +2,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class FadeImage : MonoBehaviour
 {
+    [Range(0f, 1f)] public float alphaStart;
     public UnityEvent onFadeInEnd; // Exposed in Inspector
     public UnityEvent onFadeOutEnd; // Exposed in Inspector
     Image image;
@@ -12,6 +14,8 @@ public class FadeImage : MonoBehaviour
     void Awake()
     {
         image = gameObject.GetComponent<Image>();
+        Color color = image.color;
+        image.color = new Color(color.r, color.g, color.b, alphaStart);
     }
 
     public void FadeIn(float fadeDuration)
@@ -22,6 +26,17 @@ public class FadeImage : MonoBehaviour
     public void FadeOut(float fadeDuration)
     {
         StartCoroutine(StartFade(1f, 0f, fadeDuration));
+    }
+
+    public void FadeInOut(float fadeDuration)
+    {
+        StartCoroutine(FadeInOutRoutine(fadeDuration));
+    }
+
+    private IEnumerator FadeInOutRoutine(float fadeDuration)
+    {
+        yield return StartCoroutine(StartFade(0f, 1f, fadeDuration)); // Fade in
+        yield return StartCoroutine(StartFade(1f, 0f, fadeDuration)); // Then fade out
     }
 
     private IEnumerator StartFade(float startAlpha, float endAlpha, float duration)

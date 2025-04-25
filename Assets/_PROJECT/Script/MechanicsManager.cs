@@ -18,7 +18,6 @@ public class MechanicsManager : MonoBehaviour
     public bool isGameStart;
     public bool isOpenMechanic;
     public string currentTriggerMechanic;
-    public MechanicName currentTriggerMechanicEnum;
 
     public bool isSwingingBabyToSleepOpened;
     public bool isSwingComplete;

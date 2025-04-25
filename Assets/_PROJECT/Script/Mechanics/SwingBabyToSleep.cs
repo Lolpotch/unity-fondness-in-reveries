@@ -6,6 +6,8 @@ using DIALOGUE;
 public class SwingBabyToSleep : MonoBehaviour
 {
     [SerializeField] private GameObject curentMechanic;
+    [SerializeField] private GameObject blackPanelIn;
+    [SerializeField] private GameObject blackPanelOut;
     public RectTransform background;
     public RectTransform baby;
     public RectTransform basket;
@@ -13,6 +15,7 @@ public class SwingBabyToSleep : MonoBehaviour
     public RectTransform guideLeft;
     public RectTransform guideRight;
     public RectTransform babyPanel;
+    public RectTransform space;
 
     public Image[] fadeIn1;
 
@@ -32,9 +35,11 @@ public class SwingBabyToSleep : MonoBehaviour
     // bool isBabySleepDialogueTriggered = false;
     bool movingLeft = true;
     bool activeOnce = false;
+    bool activeSpaceOnce = false;
 
     void Start()
     {
+        blackPanelOut.SetActive(false);
         guideLeft.gameObject.SetActive(true);
         guideRight.gameObject.SetActive(true);
 
@@ -53,6 +58,7 @@ public class SwingBabyToSleep : MonoBehaviour
         babyPanel.gameObject.SetActive(false);
         basket.gameObject.SetActive(true);
         basketWithBaby.gameObject.SetActive(false);
+        space.gameObject.SetActive(false);
 
         basketButton = basket.GetComponent<Button>();
         basketOutline = basket.GetComponent<Outline>();
@@ -65,13 +71,14 @@ public class SwingBabyToSleep : MonoBehaviour
     }
     void Update()
     {
-        if (curentMechanic.activeSelf && !activeOnce)
+        if (blackPanelIn.activeSelf && !activeOnce)
         {
             activeOnce = true;
             // FadeManager.Instance.FadeIn(fadeIn1, 1f);
-            background.GetComponent<FadeImage>().FadeIn(1f);
-            baby.GetComponent<FadeImage>().FadeIn(1f);
-            guideLeft.GetComponent<FadeImage>().FadeIn(1f);
+            // background.GetComponent<FadeImage>().FadeIn(1f);
+            // baby.GetComponent<FadeImage>().FadeIn(1f);
+            // guideLeft.GetComponent<FadeImage>().FadeIn(1f);
+            blackPanelIn.GetComponent<FadeImage>().FadeInOut(.7f);
         }
 
         if (!MechanicsManager.Instance.isSwingComplete)
@@ -99,9 +106,24 @@ public class SwingBabyToSleep : MonoBehaviour
 
         //     StartCoroutine(DisableMechanic());
         // }
-        if (MechanicsManager.Instance.isSwingingBabyToSleepPlayed && DialogueTrigger.Instance.isPutBabySleep_4Played && !DialogueManager.instance.isRunningConversation && Input.GetKeyDown(KeyCode.Space))
+        if (MechanicsManager.Instance.isSwingingBabyToSleepPlayed && DialogueTrigger.Instance.isPutBabySleep_4Played && !DialogueManager.instance.isRunningConversation)
         {
-            SetMechanic(false);
+            if (!activeSpaceOnce)
+            {
+                space.gameObject.SetActive(true);
+                space.GetComponent<FadeImage>().FadeIn(1f);
+
+                activeSpaceOnce = true;
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Space) && space.gameObject.activeInHierarchy)
+                {
+                    // SetMechanic(false);
+                    blackPanelOut.SetActive(true);
+                    blackPanelOut.GetComponent<FadeImage>().FadeInOut(.7f);
+                }
+            }
         }
     }
 

@@ -11,25 +11,27 @@ public class ObjectTrigger : MonoBehaviour
     [SerializeField] private GameObject eToInteract;
     [SerializeField] private GameObject mechanics;
     [SerializeField] private bool playerInTrigger = false;
+
+    [Header("Transition")]
+    [SerializeField] private GameObject blackScreenToScene2;
+
     private BoxCollider2D objCollider2D;
-    private Animator objAnimator;
+    // private Animator objAnimator;
     
-    [Header("Hover Sprite")]
-    private SpriteRenderer objHoverSprite;
+    // [Header("Hover Sprite")]
+    // private SpriteRenderer objHoverSprite;
 
     private void Start() 
     {
         mechanicsManager = FindObjectOfType<MechanicsManager>();
         objCollider2D = GetComponent<BoxCollider2D>();
         objCollider2D.enabled = false;
-        objAnimator = GetComponent<Animator>();
-        if (objAnimator != null)
-        { objAnimator.enabled = false; }
+        // objAnimator = GetComponent<Animator>();
+        // if (objAnimator != null)
+        // { objAnimator.enabled = false; }
 
-        objHoverSprite = GetComponent<SpriteRenderer>();
-        objHoverSprite.enabled = false;
-
-        MechanicsManager.Instance.currentTriggerMechanicEnum = MechanicName.none;
+        // objHoverSprite = GetComponent<SpriteRenderer>();
+        // objHoverSprite.enabled = false;
     }
 
     private void Update() 
@@ -53,22 +55,30 @@ public class ObjectTrigger : MonoBehaviour
         {
             case MechanicName.swingingBabyToSleep:
                 if (!mechanicsManager.isSwingingBabyToSleepPlayed && !DialogueManager.instance.isRunningConversation) 
-                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; objAnimator.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; 
+                // objAnimator.enabled = false; 
+                }
                 break;
 
             case MechanicName.closeCurtain:
                 if (mechanicsManager.isSwingingBabyToSleepPlayed && !mechanicsManager.isCloseCurtainPlayed) 
-                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; objAnimator.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; 
+                // objAnimator.enabled = false;
+                }
                 break;
 
             case MechanicName.turnOffLamp:
                 if (mechanicsManager.isCloseCurtainPlayed && !mechanicsManager.isTurnOffLampPlayed) 
-                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; objAnimator.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; 
+                // objAnimator.enabled = false;
+                }
                 break;
 
             case MechanicName.doorLivingRoom:
                 if (mechanicsManager.isTurnOffLampPlayed) 
-                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; objAnimator.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; 
+                // objAnimator.enabled = false;
+                }
                 break;
 
             case MechanicName.interactPhoto1:
@@ -156,7 +166,9 @@ public class ObjectTrigger : MonoBehaviour
                 break;
 
             case MechanicName.doorLivingRoom:
-                SceneManager.LoadScene("Act-1_Scene2_RuangTamu");
+                blackScreenToScene2.SetActive(true);
+                blackScreenToScene2.GetComponent<FadeImage>().FadeIn(1f);
+                // SceneManager.LoadScene("Act-1_Scene2_RuangTamu");
                 break;
 
             case MechanicName.interactPhoto1:
@@ -247,12 +259,11 @@ public class ObjectTrigger : MonoBehaviour
             playerInTrigger = true;
             if (!mechanicsManager.isOpenMechanic)
             {
-                objHoverSprite.enabled = true;
-                objAnimator.enabled = true;
+                // objHoverSprite.enabled = true;
+                // objAnimator.enabled = true;
                 eToInteract.SetActive(true);
             }
             mechanicsManager.currentTriggerMechanic = mechanicName.ToString();
-            mechanicsManager.currentTriggerMechanicEnum = mechanicName;
         }
     }
 
@@ -261,13 +272,12 @@ public class ObjectTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInTrigger = false;
-            objHoverSprite.enabled = false;
-            objAnimator.enabled = false;
-            objAnimator.Rebind();
+            // objHoverSprite.enabled = false;
+            // objAnimator.enabled = false;
+            // objAnimator.Rebind();
             eToInteract.SetActive(false);
         }
         mechanicsManager.currentTriggerMechanic = MechanicName.none.ToString();
-        mechanicsManager.currentTriggerMechanicEnum = MechanicName.none;
     }
 
     private void OpenMechanics(ref bool booleanMechanics)
@@ -276,5 +286,10 @@ public class ObjectTrigger : MonoBehaviour
         mechanics.SetActive(true);
         mechanicsManager.isOpenMechanic = true;
         booleanMechanics = true;
+    }
+
+    public void LoadScene2() 
+    {
+        SceneManager.LoadScene("Act-1_Scene2_RuangTamu");
     }
 }
